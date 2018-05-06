@@ -1,21 +1,25 @@
 // @flow
 import { openExternal } from './electron'
 import { EXPLORERS } from '../core/constants'
-import { isMainNetwork } from '../core/networks'
+import { isMainNetwork, isTestNetwork } from '../core/networks'
 
 export const getExplorerBaseURL = (networkId: string, explorer: ExplorerType) => {
   let baseURL
   if (explorer === EXPLORERS.NEO_TRACKER) {
     if (isMainNetwork(networkId)) {
       baseURL = 'https://neotracker.io'
-    } else {
+    } else if (isTestNetwork(networkId)) {
       baseURL = 'https://testnet.neotracker.io'
+    } else { // isPrivateNetwork
+      baseURL = 'http://192.168.1.148:9999' // not available!
     }
   } else if (explorer === EXPLORERS.NEO_SCAN) {
     if (isMainNetwork(networkId)) {
       baseURL = 'https://neoscan.io'
-    } else {
+    } else if (isTestNetwork(networkId)) {
       baseURL = 'https://neoscan-testnet.io'
+    } else { // isPrivateNetwork
+      baseURL = 'http://192.168.1.148:4000'
     }
   } else {
     if (isMainNetwork(networkId)) {
